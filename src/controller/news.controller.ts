@@ -1,5 +1,5 @@
 import { ObjectId } from 'bson';
-import { InsertOneWriteOpResult, MongoCallback, UpdateWriteOpResult } from 'mongodb';
+import { DeleteWriteOpResultObject, InsertOneWriteOpResult, MongoCallback, UpdateWriteOpResult } from 'mongodb';
 import Connection from '../utils/mongo';
 import CONSTANTS from '../utils/const';
 
@@ -36,6 +36,17 @@ class NewsController {
             collection.updateOne(query, { $set: { ...item } }, callback);
         } catch (error) {
             console.error('Error News Update: ', error)
+        }
+    }
+
+    static async delete(item: NewsModel, callback: MongoCallback<DeleteWriteOpResultObject>) {
+        try {
+            const collection = Connection.db.collection(CONSTANTS.COLLECTIONS.NEWS);
+            const query = { _id: new ObjectId(item.id) }
+            delete item.id;
+            collection.deleteOne(query, callback);
+        } catch (error) {
+            console.error('Error News Delete: ', error)
         }
     }
 

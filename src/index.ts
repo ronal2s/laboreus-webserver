@@ -62,6 +62,20 @@ app.route('/news')
             }
         })
     })
+    .delete((req, res) => {
+        const news: NewsModel = req.body;
+        news.updatedDate = new Date().toISOString();
+        let response: GenericResponse;
+        NewsController.delete(news, (error, result) => {
+            if (error) {
+                response = { error: true, message: error.message }
+                res.json(response)
+            } else {
+                response = { error: false, message: 'Noticia eliminada' }
+                res.json(response)
+            }
+        })
+    })
     .get(async (req, res) => {
         const data = await NewsController.getAll()
         data.forEach((item) => item.id = item._id)
