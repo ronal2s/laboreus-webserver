@@ -1,5 +1,7 @@
 class NewsModel {
     createdDate: string;
+    updatedDate: string;
+    id: string;
     date: string;
     title: string;
     body: string;

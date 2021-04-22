@@ -1,5 +1,8 @@
-const COLLECTIONS = {
-    NEWS: "news",
+const CONSTANTS = {
+    COLLECTIONS: {
+        NEWS: 'news',
+        FILES: 'files'
+    }
 }
 
-export = { COLLECTIONS }
+export default CONSTANTS;

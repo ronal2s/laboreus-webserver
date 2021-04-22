@@ -44,11 +44,32 @@ app.route('/news')
         news.createdDate = new Date().toISOString();
         NewsController.insert(news, (error, result) => {
             if (error) {
-                res.json({ error: true, reason: error })
+                res.json({ error: true, message: error })
             } else {
-                res.json({ error: false, response: result.ops })
+                res.json({ error: false, response: result.ops, message: 'Noticia creada' })
             }
         });
     })
+    .put((req, res) => {
+        const news: NewsModel = req.body;
+        news.updatedDate = new Date().toISOString();
+        // console.log(req.body)
+        NewsController.update(news, (error, result) => {
+            if (error) {
+                res.json({ error: true, message: error })
+            } else {
+                res.json({ error: false, response: result.result.ok, message: 'Noticia actualizada' })
+            }
+        })
+    })
+    .get(async (req, res) => {
+        const data = await NewsController.getAll()
+        data.forEach((item) => item.id = item._id)
+        res.send({ error: false, data })
+    })
 
+// app.post('/upload', (req, res) => {
+//     console.log(req.file)
+//     res.json({ file: 'req.file' });
+// })
 app.listen(port, () => console.log(`Listening on port ${port}`))
