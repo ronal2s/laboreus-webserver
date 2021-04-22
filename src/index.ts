@@ -18,6 +18,9 @@ app.use(express.json())
 
 Connection.open();
 
+app.get('/', (req, res) => {
+    res.send('Laboreus API')
+})
 
 app.post('/login', (req, res) => {
     const credentials: LoginModel = req.body;
@@ -25,7 +28,7 @@ app.post('/login', (req, res) => {
     if (credentials.user == 'laboreus' && credentials.password == 'N7RytxrTfhDyvyTQCA5q5xKoJToKSYgdsJ_mHrv0') {
         response = { error: false, message: 'Credenciales correctas' }
     } else {
-        response = { error: false, message: 'Usuario o clave incorrectos' }
+        response = { error: true, message: 'Usuario o clave incorrectos' }
     }
     res.send(response);
 })
