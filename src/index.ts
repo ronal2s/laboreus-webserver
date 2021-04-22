@@ -2,11 +2,15 @@ import { ObjectId } from 'bson';
 import Connection from './utils/mongo';
 import { Application } from 'express';
 import NewsController from './controller/news.controller';
+import { Socket } from 'node:dgram';
 
 var cors = require('cors')
 const port = process.env.PORT || 5000;
 const express = require('express');
 const app: Application = express();
+
+const server = require('http').Server(app);
+const socketio: Socket = require('socket.io')(server);
 
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
@@ -15,50 +19,43 @@ app.use(express.json())
 Connection.open();
 
 
-
-
-// async function prueba() {
-//     const recipes_collection = Connection.db.collection('recipes');
-//     console.log('Dentro')
-//     const cursor = await recipes_collection.find().sort({ name: 1 });
-//     // console.log('Dentro2: ', cursor)
-//     // await cursor.forEach(recipe => {
-//     //     console.log('ID: ', recipe._id);
-//     //     console.log(`${recipe.name} has ${recipe.ingredients.length} ingredients and takes ${recipe.prepTimeInMinutes} minutes to make.`);
-//     // });
-
-//     recipes_collection.findOne({ _id: new ObjectId('60466de152dcde429843b462') }).then((result) => {
-//         // recipes_collection.findOne({ name: 'loco moco' },).then((result) => {
-//         console.log('Result: ', result);
-//     })
-// }
-
-// setTimeout(() => {
-//     BarberController.prueba();
-//     // prueba();
-// }, 1000)
+app.post('/login', (req, res) => {
+    const credentials: LoginModel = req.body;
+    let response: GenericResponse;
+    if (credentials.user == 'laboreus' && credentials.password == 'N7RytxrTfhDyvyTQCA5q5xKoJToKSYgdsJ_mHrv0') {
+        response = { error: false, message: 'Credenciales correctas' }
+    } else {
+        response = { error: false, message: 'Usuario o clave incorrectos' }
+    }
+    res.send(response);
+})
 
 app.route('/news')
     .post((req, res) => {
         const news: NewsModel = req.body;
         news.createdDate = new Date().toISOString();
+        let response: GenericResponse;
         NewsController.insert(news, (error, result) => {
             if (error) {
-                res.json({ error: true, message: error })
+                response = { error: true, message: error.message }
+                res.json(response)
             } else {
-                res.json({ error: false, response: result.ops, message: 'Noticia creada' })
+                response = { error: false, message: 'Noticia creada' }
+                res.json(response)
             }
         });
     })
     .put((req, res) => {
         const news: NewsModel = req.body;
         news.updatedDate = new Date().toISOString();
-        // console.log(req.body)
+        let response: GenericResponse;
         NewsController.update(news, (error, result) => {
             if (error) {
-                res.json({ error: true, message: error })
+                response = { error: true, message: error.message }
+                res.json(response)
             } else {
-                res.json({ error: false, response: result.result.ok, message: 'Noticia actualizada' })
+                response = { error: false, message: 'Noticia actualizada' }
+                res.json(response)
             }
         })
     })
@@ -73,3 +70,14 @@ app.route('/news')
 //     res.json({ file: 'req.file' });
 // })
 app.listen(port, () => console.log(`Listening on port ${port}`))
+// //Sockets
+// socketio.on("connection", (userSocket) => {
+//     userSocket.on("send_message", (data) => {
+//         userSocket.broadcast.emit("receive_message", data)
+//     })
+//     // socketio.emit('jjj', )
+// })
+
+// server.listen(8080, function () {
+//     console.log('Sockets Server listening on port 8080');
+// });
