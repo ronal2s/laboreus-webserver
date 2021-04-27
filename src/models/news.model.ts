@@ -4,6 +4,7 @@ class NewsModel {
     id: string;
     date: string;
     title: string;
+    publishedBy: string;
     body: string;
     keywords: string;
     rubros: string;
