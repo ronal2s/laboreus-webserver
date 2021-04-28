@@ -1,16 +1,12 @@
-import { ObjectId } from 'bson';
 import Connection from './utils/mongo';
 import { Application } from 'express';
 import NewsController from './controller/news.controller';
-import { Socket } from 'node:dgram';
 
 var cors = require('cors')
 const port = process.env.PORT || 5000;
 const express = require('express');
 const app: Application = express();
 
-const server = require('http').Server(app);
-const socketio: Socket = require('socket.io')(server);
 
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
@@ -82,19 +78,4 @@ app.route('/news')
         res.send({ error: false, data })
     })
 
-// app.post('/upload', (req, res) => {
-//     console.log(req.file)
-//     res.json({ file: 'req.file' });
-// })
 app.listen(port, () => console.log(`Listening on port ${port}`))
-// //Sockets
-// socketio.on("connection", (userSocket) => {
-//     userSocket.on("send_message", (data) => {
-//         userSocket.broadcast.emit("receive_message", data)
-//     })
-//     // socketio.emit('jjj', )
-// })
-
-// server.listen(8080, function () {
-//     console.log('Sockets Server listening on port 8080');
-// });
