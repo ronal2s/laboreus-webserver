@@ -1,6 +1,8 @@
 import Connection from './utils/mongo';
 import { Application } from 'express';
 import NewsController from './controller/news.controller';
+import CONSTANTS from './utils/const';
+import { getNewsPlatform } from './utils/helpers';
 
 var cors = require('cors')
 const port = process.env.PORT || 5000;
@@ -29,11 +31,13 @@ app.post('/login', (req, res) => {
     res.send(response);
 })
 
+
 app.route('/news')
     .post((req, res) => {
         const news: NewsModel = req.body;
         news.createdDate = new Date().toISOString();
         let response: GenericResponse;
+        news.platform = getNewsPlatform(news);
         NewsController.insert(news, (error, result) => {
             if (error) {
                 response = { error: true, message: error.message }
@@ -77,5 +81,26 @@ app.route('/news')
         data.forEach((item) => item.id = item._id)
         res.send({ error: false, data })
     })
+
+// app.get('/test', async (req, res) => {
+//     const data = await NewsController.getAll()
+
+//     data.forEach((item: NewsModel) => {
+//         //@ts-ignore
+//         item.id = item._id;
+//         item.platform = getNewsPlatform(item)
+//         NewsController.update(item, (error, result) => {
+//             if (error) {
+//                 console.error(error);
+//             } else {
+//                 console.log('Actualizado')
+//             }
+//         })
+//     })
+
+//     res.send(data)
+
+// })
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`))

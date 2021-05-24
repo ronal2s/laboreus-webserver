@@ -8,8 +8,9 @@ class NewsModel {
     body: string;
     keywords: string;
     rubros: string;
-    way: string;
+    platform: string;//platform
     picture: string;
+    pictureDescription: string;
     institutions: string;
     companies: string;
     mainUrl: string;

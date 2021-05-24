@@ -4,7 +4,8 @@ const CONSTANTS = {
     COLLECTIONS: {
         NEWS: 'news',
         FILES: 'files'
-    }
+    },
+
 };
 exports.default = CONSTANTS;
 //# sourceMappingURL=const.js.map
