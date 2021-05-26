@@ -82,23 +82,39 @@ app.route('/news')
         res.send({ error: false, data })
     })
 
+// app.get('/news/page', (req, res) => {
+//     const { start, end } = req.query
+
+
+// })
+
 // app.get('/test', async (req, res) => {
 //     const data = await NewsController.getAll()
-
+//     let test = [];
 //     data.forEach((item: NewsModel) => {
 //         //@ts-ignore
 //         item.id = item._id;
-//         item.platform = getNewsPlatform(item)
-//         NewsController.update(item, (error, result) => {
-//             if (error) {
-//                 console.error(error);
-//             } else {
-//                 console.log('Actualizado')
+//         // item.platform = getNewsPlatform(item)
+//         if (item.picture) {
+//             if (!item.picture.includes('jpeg') || !item.picture.includes('jpg')) {
+//                 test.push(item);
+
 //             }
-//         })
+//             // if (item.picture.toLowerCase().includes('jpegs') || item.picture.toLowerCase().includes('jpegd')) {
+//             //     test.push(item);
+//             // }
+
+//         }
+//         // NewsController.update(item, (error, result) => {
+//         //     if (error) {
+//         //         console.error(error);
+//         //     } else {
+//         //         console.log('Actualizado')
+//         //     }
+//         // })
 //     })
 
-//     res.send(data)
+//     res.send(test)
 
 // })
 

@@ -53,8 +53,8 @@ class NewsController {
     static async getAll() {
         try {
             const collection = Connection.db.collection(CONSTANTS.COLLECTIONS.NEWS);
-            const data = await collection.find().toArray()
-            // console.log(data)
+            // const data = await collection.find().toArray()
+            const data = await collection.find().sort({ "_id": -1 }).toArray()
             return data;
 
         } catch (error) {

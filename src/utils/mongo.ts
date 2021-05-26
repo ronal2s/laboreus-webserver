@@ -9,7 +9,7 @@ class Connection {
         if (this.db) return this.db
         let client = new MongoClient('mongodb+srv://laboreus:laboreustest@clusternorthamerica.e8uyb.mongodb.net/test?authSource=admin&replicaSet=atlas-km483x-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true')
         await client.connect();
-        this.db = client.db(process.env.NODE_ENV ? 'prod' : 'dev');
+        this.db = client.db(process.env.NODE_ENV ? 'prod' : 'prod');
         return this.db
     }
 
