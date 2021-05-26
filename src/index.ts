@@ -82,11 +82,20 @@ app.route('/news')
         res.send({ error: false, data })
     })
 
-// app.get('/news/page', (req, res) => {
-//     const { start, end } = req.query
-
-
-// })
+app.get('/news/page', async (req, res) => {
+    const page: { start: number, end: number } = req.query as any
+    const data = await NewsController.getAll()
+    let dataPagination: NewsModel[] = [];
+    if (page.end <= data.length) {
+        for (let i = page.start; i < page.end; i++) {
+            const element = data[i];
+            if (element) {
+                dataPagination.push(element);
+            }
+        }
+    }
+    res.send({ error: false, length: dataPagination.length, data: dataPagination })
+})
 
 // app.get('/test', async (req, res) => {
 //     const data = await NewsController.getAll()
@@ -94,27 +103,23 @@ app.route('/news')
 //     data.forEach((item: NewsModel) => {
 //         //@ts-ignore
 //         item.id = item._id;
-//         // item.platform = getNewsPlatform(item)
-//         if (item.picture) {
-//             if (!item.picture.includes('jpeg') || !item.picture.includes('jpg')) {
-//                 test.push(item);
+//         item.platform = getNewsPlatform(item)
+//         // if (item.picture) {
+//         //     if (!item.picture.includes('jpeg') || !item.picture.includes('jpg')) {
+//         //         test.push(item);
 
-//             }
-//             // if (item.picture.toLowerCase().includes('jpegs') || item.picture.toLowerCase().includes('jpegd')) {
-//             //     test.push(item);
-//             // }
-
-//         }
-//         // NewsController.update(item, (error, result) => {
-//         //     if (error) {
-//         //         console.error(error);
-//         //     } else {
-//         //         console.log('Actualizado')
 //         //     }
-//         // })
+//         // }
+//         NewsController.update(item, (error, result) => {
+//             if (error) {
+//                 console.error(error);
+//             } else {
+//                 console.log('Actualizado')
+//             }
+//         })
 //     })
 
-//     res.send(test)
+//     res.send(data)
 
 // })
 
