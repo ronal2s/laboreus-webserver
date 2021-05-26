@@ -90,6 +90,7 @@ app.get('/news/page', async (req, res) => {
         for (let i = page.start; i < page.end; i++) {
             const element = data[i];
             if (element) {
+                element.id = element._id
                 dataPagination.push(element);
             }
         }
